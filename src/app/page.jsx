@@ -1,9 +1,22 @@
+import TaskCard from "@/components/TaskCard";
+import { prisma } from "@/libs/prisma";
 
+async function loadTasks() {
+  // const res = fetch('http://localhost:3000/api/tasks')
+  // cont data = (await res).json()
 
-export default function Home() {
+  const tasks = await prisma.task.findMany()
+  return tasks;
+}
+
+export default async function Home() {
+
+  const tasks = await loadTasks();
   return (
-    <div>
-     <h1>Tareas</h1>
+    <div className="" >
+     {tasks.map(task => (
+      <TaskCard task={task} key={task.id} />
+     ))}
     </div>
   );
 }
